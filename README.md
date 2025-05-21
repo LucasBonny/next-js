@@ -7,7 +7,7 @@ O objetivo desse estudo é abordar todos tópicos necessários para se utilizar 
 Serão abordado alguns tópicos abaixo que serão essenciais para o bom uso dessa ferramenta
  - [x] Criação de projetos
  - [x] Roteamento e navegação entre páginas
- - [ ] Metadata (SEO)
+ - [x] Metadata (SEO)
  - [ ] Server e Client components
  - [ ] Rotas dinâmicas
  - [ ] Actions
@@ -49,7 +49,7 @@ Serão abordado alguns tópicos abaixo que serão essenciais para o bom uso dess
 
  No mesmo diretório há um arquivo chamado `layout.tsx` é o arquivo de configuração do layout da aplicação.
 
- A criação de uma nova rota vem através de uma nova pasta ela irá ser a nova rota dentro do projeto e dentro dela terá um arquivo `page.tsx`.
+ A [criação de uma nova rota](https://nextjs.org/docs/app/getting-started/layouts-and-pages) vem através de uma nova pasta ela irá ser a nova rota dentro do projeto e dentro dela terá um arquivo `page.tsx`.
 
  O arquivo `layout.tsx` gerencia toda a página renderizando apenas o componente ao trocar de rota, possibilitando a alteração base do arquivo, como inserindo outros componentes na página.
 
@@ -69,3 +69,27 @@ Serão abordado alguns tópicos abaixo que serão essenciais para o bom uso dess
 
  Por padrão ao abrir uma rota inexistente aparece o erro 404 do próprio next mas podemos personalizar a nossa página de erro.
  Para isso precisa-se criar um arquivo na pasta `app` o arquivo `not-found.tsx` e devemos colocar nossa página de erro nele.
+ ## Tópico 3 - Metadata (SEO)
+O objetivo dos metadatas servem para melhorar a indexação do nosso site nos buscadores, como: Google, Bing, Brave, entre outros...
+E utilizando o Next, nos dá liberdade de utilizar esses metadata de forma dinânica/estática para páginas únicas, ou de forma global.
+
+[Metadata SEO - Next.JS](https://nextjs.org/docs/app/guides/production-checklist#metadata-and-seo)
+
+### Como utilizar
+Para utilizar basta criar uma variável na página do tipo metadata e configurar os dados necessários.
+
+```js
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: 'Home - Aula Next JS do zero!',
+  description: 'Aprendendo Next JS do zero com Sujeito Programador!',
+  openGraph: {
+    title: 'Aprendendo Next JS com Sujeito Programador!',
+    description: 'Aprendendo Next JS do zero com Sujeito Programador!'
+  }
+}
+```
+com isso já estará disponível as informações dentro da página.
+Agora se quiser fazer de forma global, basta colocar dentro do arquivo `layout.tsx`. Ao fazer isso, as páginas que não tiverem metadatas, usarão as metadatas globais.
+
