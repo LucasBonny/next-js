@@ -6,7 +6,7 @@ O objetivo desse estudo é abordar todos tópicos necessários para se utilizar 
 ## Tópicos
 Serão abordado alguns tópicos abaixo que serão essenciais para o bom uso dessa ferramenta
  - [x] Criação de projetos
- - [ ] Roteamento e navegação entre páginas
+ - [x] Roteamento e navegação entre páginas
  - [ ] Metadata (SEO)
  - [ ] Server e Client components
  - [ ] Rotas dinâmicas
@@ -64,3 +64,8 @@ Serão abordado alguns tópicos abaixo que serão essenciais para o bom uso dess
  ### Navegação
 
  Para fazer a troca de rota dentro do Next.JS utilizamos a tag `<Link href='/'>Mensagem<Link>`.
+
+ ### Página de erro 404
+
+ Por padrão ao abrir uma rota inexistente aparece o erro 404 do próprio next mas podemos personalizar a nossa página de erro.
+ Para isso precisa-se criar um arquivo na pasta `app` o arquivo `not-found.tsx` e devemos colocar nossa página de erro nele.
