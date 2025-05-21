@@ -8,7 +8,8 @@ Serão abordado alguns tópicos abaixo que serão essenciais para o bom uso dess
  - [x] Criação de projetos
  - [x] Roteamento e navegação entre páginas
  - [x] Metadata (SEO)
- - [ ] Server e Client components
+ - [x] Server e Client Components
+ - [ ] Actions
  - [ ] Rotas dinâmicas
  - [ ] Actions
  - [ ] Revalidate, Cache
@@ -22,10 +23,10 @@ Serão abordado alguns tópicos abaixo que serão essenciais para o bom uso dess
 
  ### Instruções
 
- 1. abra um terminal no dispositivo.
- 2. vá ao diretório onde o projeto irá ficar.
- 3. execute `npx create-next-app@latest`
- 4. responda as perguntas abaixo com:
+ 1. Abra um terminal no dispositivo.
+ 2. Vá ao diretório onde o projeto irá ficar.
+ 3. Execute `npx create-next-app@latest`
+ 4. Responda as perguntas abaixo com:
  ```bash
 ✔ What is your project named? project
 ✔ Would you like to use TypeScript? Yes
@@ -37,8 +38,8 @@ Serão abordado alguns tópicos abaixo que serão essenciais para o bom uso dess
 ✔ Would you like to customize the import alias (`@/*` by default)? Yes
 ✔ What import alias would you like configured? @/*
  ```
- 5. abra o diretório do projeto: `cd project`.
- 6. execute o projeto: `npm run dev`. 
+ 5. Abra o diretório do projeto: `cd project`.
+ 6. Execute o projeto: `npm run dev`. 
 
  ## Tópico 2 - Roteamento e navegação entre páginas
  Por padrão, ao utilizar rotas com a biblioteca react, seria necessário a utilização de uma biblioteca externa para fazer o gerenciamento de rotas, mas com o Next.JS não é necessário, pois, há por padrão uma maneira simples de se lidar com as elas.
@@ -54,12 +55,12 @@ Serão abordado alguns tópicos abaixo que serão essenciais para o bom uso dess
  O arquivo `layout.tsx` gerencia toda a página renderizando apenas o componente ao trocar de rota, possibilitando a alteração base do arquivo, como inserindo outros componentes na página.
 
  #### Criando um componente Header para o layout.tsx
- 1. volte até o diretório `src` e crie uma pasta chamada `components`
- 2. crie uma pasta com o nome do componente
- 3. crie um arquivo chamado `index.tsx`
- 4. monte o componente
- 5. exporta o componente sem 'default'
- 6. importe dentro do `layout.tsx`
+ 1. Volte até o diretório `src` e crie uma pasta chamada `components`
+ 2. Crie uma pasta com o nome do componente
+ 3. Crie um arquivo chamado `index.tsx`
+ 4. Monte o componente
+ 5. Exporta o componente sem 'default'
+ 6. Importe dentro do `layout.tsx`
 
  ### Navegação
 
@@ -93,3 +94,50 @@ export const metadata: Metadata = {
 com isso já estará disponível as informações dentro da página.
 Agora se quiser fazer de forma global, basta colocar dentro do arquivo `layout.tsx`. Ao fazer isso, as páginas que não tiverem metadatas, usarão as metadatas globais.
 
+## Tópico 4 - Server e Client Components
+Antes de começarmos, devemos está ciente que por padrão, todos os nossos componentes criado dentro do Next são __Server Components__. E com isso há menos javascript rodando por parte do cliente trazendo mais performance ao acessar a página, mas as vezes é necessário a interação do usuário, logo, devemos utilizar o __Client Components__. Para se criar um componente com renderização por parte do cliente, basta utilizar no início da página: 
+```js
+'use client'
+```
+### Qual a diferença entre eles?
+A princípio, irei mostrar na prática como fazer uma requisição HTTP.
+
+#### Usando um Server Component
+1. Devemos transformar o componente em assíncrono
+```js
+export default async function Posts() {...}
+```
+2. Fazer uma requisição dentro do corpo do componente com await
+```js
+const response = await fetch('https://dummyjson.com/posts')
+const data: ResponseProps = await response.json()
+```
+ e com isso quando a página carregar para o usuário já terá renderizado os dados na tela.
+
+#### Usando um Client Component
+O processo utilizado com async await só é permitido ser utilizado em __Server Component__, logo o processo acima não se aplica aqui. Para conseguirmos fazer a requisição em um __Client Component__ devemos seguir os seguintes passos:
+
+1. Devemos declarar no componente `'use client'` e com isso temos acesso aos recursos padrões do react com useState, UseEffect.
+2. Iremos criar `const [posts, setPosts] = useState([])`
+3. E usaremos o useEffect para fazer a requisição:
+```js
+useEffect(() => {
+  fetch('https://dummyjson.com/posts')
+  .then(res => res.json())
+  .then(data => setPosts(data.posts))
+}, []);
+```
+e com isso quando a página carregará os dados somente após o _client_ ter feito a requisição na api.
+
+Utilizar o __Server Component__ pode ser performático mas não temos acesso ao useState e assim podemos optar por outros meios para utilizá-lo em uma página __Server Component__.
+### Como usar recursos do react dentro de um Server Component
+Para fazermos isso podemos criar um componente para fazer essa função e declarar ele para renderizar do lado client.
+
+1. Criamos um botão em `src/components`
+2. Definimos como _client_
+3. Definimos um useState para armazenar um nome
+4. Criamos uma função para alterar o nome
+5. na tag button definimos o parametro onClick com a função.
+6. Importamos o componente dentro de uma página __Server Component__.
+
+Agora temos um recurso com _client_ dentro de uma página __Server Component__.
